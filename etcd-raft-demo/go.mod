@@ -1,4 +1,4 @@
-module github.com/weedge/raftexample
+module github.com/weedge/raftexample/etcd-raft-demo
 
 go 1.19
 

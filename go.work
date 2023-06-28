@@ -1,0 +1,6 @@
+go 1.19
+
+use (
+	./etcd-raft-demo
+	./hashicorp-raft-demo/mini-kv
+)

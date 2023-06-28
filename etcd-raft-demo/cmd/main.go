@@ -18,7 +18,7 @@ import (
 	"flag"
 	"strings"
 
-	"github.com/weedge/raftexample"
+	raftexample "github.com/weedge/raftexample/etcd-raft-demo"
 	"go.etcd.io/raft/v3/raftpb"
 )
 
