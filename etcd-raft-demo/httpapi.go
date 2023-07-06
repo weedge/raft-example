@@ -53,10 +53,15 @@ func (h *httpKVAPI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Failed to GET", http.StatusNotFound)
 		}
 	case http.MethodPost:
-		url, err := io.ReadAll(r.Body)
-		if err != nil {
-			log.Printf("Failed to read on POST (%v)\n", err)
-			http.Error(w, "Failed on POST", http.StatusBadRequest)
+		url := r.FormValue("url")
+		if len(url) == 0 {
+			http.Error(w, "len(url)==0", http.StatusBadRequest)
+			return
+		}
+		op := r.FormValue("op")
+		opType, ok := raftpb.ConfChangeType_value[op]
+		if !ok {
+			http.Error(w, "op "+op+" unsupport", http.StatusBadRequest)
 			return
 		}
 
@@ -68,9 +73,9 @@ func (h *httpKVAPI) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		}
 
 		cc := raftpb.ConfChange{
-			Type:    raftpb.ConfChangeAddNode,
+			Type:    raftpb.ConfChangeType(opType),
 			NodeID:  nodeID,
-			Context: url,
+			Context: []byte(url),
 		}
 		h.confChangeC <- cc
 		// As above, optimistic that raft will apply the conf change

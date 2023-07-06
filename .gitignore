@@ -58,7 +58,9 @@ target/
 
 
 # store data
+data/
 raftexample-*
+etcd-raft-demo/raftexample
 
 # workspace
 go.work.sum
