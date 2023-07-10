@@ -65,6 +65,7 @@ func (s *Kvstore) Lookup(key string) (string, bool) {
 
 func (s *Kvstore) Propose(k string, v string) {
 	var buf strings.Builder
+	// todo: propose cmd
 	if err := gob.NewEncoder(&buf).Encode(kv{k, v}); err != nil {
 		log.Fatal(err)
 	}
@@ -94,6 +95,7 @@ func (s *Kvstore) readCommits(commitC <-chan *commit, errorC <-chan error) {
 			if err := dec.Decode(&dataKv); err != nil {
 				log.Fatalf("raftexample: could not decode message (%v)", err)
 			}
+			// todo : apply cmd
 			s.mu.Lock()
 			s.kvStore[dataKv.Key] = dataKv.Val
 			s.mu.Unlock()
@@ -106,6 +108,7 @@ func (s *Kvstore) readCommits(commitC <-chan *commit, errorC <-chan error) {
 }
 
 func (s *Kvstore) GetSnapshot() ([]byte, error) {
+	// todo: get snapshot
 	s.mu.RLock()
 	defer s.mu.RUnlock()
 	return json.Marshal(s.kvStore)

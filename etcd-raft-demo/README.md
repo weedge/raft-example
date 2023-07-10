@@ -8,12 +8,12 @@ raftexample is an example usage of etcd's [raft library](https://github.com/etcd
 
 ### Building raftexample
 
-Clone `etcd` to `<directory>/src/go.etcd.io/etcd`
+Clone `etcd` to `<directory>/src/github.com/weedge/raft-example`
 
 ```sh
 export GOPATH=<directory>
-cd <directory>/src/go.etcd.io/etcd/contrib/raftexample
-go build -o raftexample
+cd <directory>/src/github.com/weedge/raft-example/etcd-raft-demo
+go build -o ./raftexample ./cmd/main.go
 ```
 
 ### Running single node raftexample

@@ -329,6 +329,14 @@ func (rc *raftNode) startRaft() {
 		}
 	}
 
+	snap, err := rc.raftStorage.Snapshot()
+	if err != nil {
+		panic(err)
+	}
+	rc.confState = snap.Metadata.ConfState
+	rc.snapshotIndex = snap.Metadata.Index
+	rc.appliedIndex = snap.Metadata.Index
+
 	go rc.serveRaft()
 	go rc.serveChannels()
 }
@@ -347,6 +355,7 @@ func (rc *raftNode) stopHTTP() {
 	<-rc.httpdonec
 }
 
+// follower commit  Snapshot from leader install snapshot request (raftpb.Snapshot) to follower
 func (rc *raftNode) publishSnapshot(snapshotToSave raftpb.Snapshot) {
 	if raft.IsEmptySnap(snapshotToSave) {
 		return
@@ -407,13 +416,6 @@ func (rc *raftNode) maybeTriggerSnapshot(applyDoneC <-chan struct{}) {
 }
 
 func (rc *raftNode) serveChannels() {
-	snap, err := rc.raftStorage.Snapshot()
-	if err != nil {
-		panic(err)
-	}
-	rc.confState = snap.Metadata.ConfState
-	rc.snapshotIndex = snap.Metadata.Index
-	rc.appliedIndex = snap.Metadata.Index
 
 	defer rc.wal.Close()
 

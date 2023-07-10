@@ -1,4 +1,6 @@
 # from
+https://zhuanlan.zhihu.com/p/58048906
+
 https://github.com/chenmeng1996/mini_kv
 
 # change
